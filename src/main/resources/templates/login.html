@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<head>
+    <meta charset="UTF-8">
+    <title>Medical Data</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            font-size: 25px;
+
+        }
+
+
+
+        .main-head{
+            height: 150px;
+            background: #FFF;
+
+        }
+
+        .sidenav {
+            height: 100%;
+            background-color: #000;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+
+        .main {
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+        }
+
+        @media screen and (max-width: 450px) {
+            .login-form{
+                margin-top: 10%;
+            }
+
+            .register-form{
+                margin-top: 10%;
+            }
+        }
+
+        @media screen and (min-width: 768px){
+            .main{
+                margin-left: 40%;
+            }
+
+            .sidenav{
+                width: 40%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+            }
+
+            .login-form{
+                margin-top: 15%;
+            }
+
+            .register-form{
+                margin-top: 20%;
+            }
+        }
+
+        .login-main-text{
+            margin-top: 20%;
+            padding: 60px;
+            color: #fff;
+        }
+
+        .login-main-text h2{
+            font-weight: 300;
+        }
+
+        .btn-black{
+            background-color: #000 !important;
+            color: #fff;
+        }
+    </style>
+    <script type="text/javascript">
+        function authenticateCall() {
+            var un = document.getElementById("user_name").value;
+            var pw = document.getElementById("password").value;
+            var ut = document.getElementById("user_type").value;
+
+            var haha;
+            axios
+                .post('/authenticate', {
+                    username: un,
+                    password: pw,
+                    user_type: ut
+                })
+                .then(response => {
+                    console.log(response.data);
+                    const accessToken = response.data.jwt;
+                    document.cookie = "abcHospitalApp=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "abcHospitalApp="+accessToken+";";
+                    document.cookie = "abcHospitalAppUser=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "abcHospitalAppUser="+un+";";
+                    document.cookie = "abcHospitalAppUserType=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    document.cookie = "abcHospitalAppUserType="+ut+";";
+
+                }).then(response => {
+                document.getElementById("user_name").value="";
+                document.getElementById("password").value="";
+                console.log(document.cookie);
+                document.getElementById("loginForm").submit();
+
+            })
+                .catch(error=> {
+                    console.log("error")
+                    document.getElementById("incorrectCred").innerText = "Incorrect username/password/usertype";
+                });
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2 style="font-size: 60px">ABC Hospital</h2><br><h2 style="font-size: 45px;"> Login Page</h2>
+        <p>Login from here as patient to view your medical data, book appointments. <br>Login as doctor to view patient data, appointments, prescribe patients.</p>
+    </div>
+</div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <form id = "loginForm" action="/userProfile" method="get">
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" class="form-control" name="user_name" id="user_name" placeholder="User Name">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="password" name = "password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label>User Type</label><br>
+                    <select id="user_type"  name="user_type" class="form-control" >
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+            </form>
+            <button onclick="authenticateCall()" class="btn btn-black">Login</button>
+            <form action="/register" method="get">
+                <button type="submit" class="btn btn-secondary">Register</button>
+            </form>
+            <br><div id="incorrectCred" style="color: red; font-size: 15px"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

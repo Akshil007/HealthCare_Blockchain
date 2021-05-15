@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<head>
+    <meta charset="UTF-8">
+    <title>SDBMS | Register</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            font-size: 25px;
+
+        }
+
+
+
+        .main-head{
+            height: 150px;
+            background: #FFF;
+
+        }
+
+        .sidenav {
+            height: 100%;
+            background-color: #000;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+
+        .main {
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {padding-top: 15px;}
+        }
+
+        @media screen and (max-width: 450px) {
+            .login-form{
+                margin-top: 10%;
+            }
+
+            .register-form{
+                margin-top: 10%;
+            }
+        }
+
+        @media screen and (min-width: 768px){
+            .main{
+                margin-left: 40%;
+            }
+
+            .sidenav{
+                width: 40%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+            }
+
+            .login-form{
+                margin-top: 15%;
+            }
+
+            .register-form{
+                margin-top: 20%;
+            }
+        }
+
+
+        .login-main-text{
+            margin-top: 20%;
+            padding: 60px;
+            color: #fff;
+        }
+
+        .login-main-text h2{
+            font-weight: 300;
+        }
+
+        .btn-black{
+            background-color: #000 !important;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="sidenav">
+    <div class="login-main-text">
+        <h2 style="font-size: 60px">ABC Hospital</h2><br><h2 style="font-size: 45px;"> Register Page </h2>
+    </div>
+</div>
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+            <h5><p th:if="${isError != null}" th:text="${isError}" style="color: red"></p> </h5>
+            <form id = "registerForm" action="/register" method="post">
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" class="form-control" name="user_name" id="user_name" placeholder="User Name" required="required">
+                </div>
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name" required="required">
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name" required="required">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="password" name = "password" placeholder="Password" required="required">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email" required="required">
+                </div>
+                <div class="form-group">
+                    <label>User Type</label><br>
+                    <select id="user_type" name = "user_type" class="form-control" >
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-secondary">Register</button>
+            </form>
+            <form action="/login" method="get">
+                <button type="submit" class="btn btn-black">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
