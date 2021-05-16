@@ -16,19 +16,21 @@ import java.sql.*;
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    SQL_Details sql_details;
+    SQL_Details sqlDetails;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con=DriverManager.getConnection(sql_details.getUrl(),sql_details.getUn(),sql_details.getPass());
+            Connection con=DriverManager.getConnection(sqlDetails.getUrl(),sqlDetails.getUn(),sqlDetails.getPass());
             String sql = "Select password from user_details where user_name = " + "\'"+userName+"\'";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             rs.next();
-            return new User(userName, rs.getString("password"), new ArrayList<>());
+            String pass_word = rs.getString("password");
+            con.close();
+            return new User(userName, pass_word, new ArrayList<>());
         } catch (Exception e) {
             System.out.println("loadUserByUsername exception " + e);
             return null;

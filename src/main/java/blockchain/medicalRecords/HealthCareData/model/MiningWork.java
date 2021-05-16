@@ -31,19 +31,20 @@ public class MiningWork implements  Runnable {
                 String uri = "http://"+targetNode+"/mine";
                 String result = restTemplate.getForObject(uri, String.class);
                 System.out.println(result);
-
             } catch (Exception e) {
                 System.out.println("Exception at thread : " + e);
-            }
-            finally{
-                System.out.println("sleeping");
+            } finally {
                 try {
                     Thread.sleep(60000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    System.out.println("Sleep exception");
                 }
+
             }
+
         }
+
+
 
 
     }

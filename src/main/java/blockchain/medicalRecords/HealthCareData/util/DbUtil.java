@@ -17,11 +17,11 @@ public class DbUtil {
     SQL_Details sqlDetails;
 
     public int registerNewUser(User_details curr) {
-
+        Connection con;
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con= DriverManager.getConnection(sqlDetails.getUrl(),sqlDetails.getUn(),sqlDetails.getPass());
+            con= DriverManager.getConnection(sqlDetails.getUrl(),sqlDetails.getUn(),sqlDetails.getPass());
 
             String sql = "INSERT INTO user_details VALUES (NULL," +
                     "\"" + curr.getFirst_name() +
@@ -58,7 +58,7 @@ public class DbUtil {
                 ,rs.getString("user_type")
                 ,"111111"
         );
-
+        con.close();
         return curr;
     }
 
@@ -69,7 +69,9 @@ public class DbUtil {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         rs.next();
-        return rs.getString("IP");
+        String returnIP = rs.getString("IP");
+        con.close();
+        return returnIP;
     }
 
     public void enterIp(String ip) throws Exception {
@@ -122,6 +124,8 @@ public class DbUtil {
             data.add(new Appointment(rs.getString("appointment_id"),rs.getInt("pid"), rs.getInt("did"), rs.getString("dateAndTime"), rs.getString("status"), rs.getString("description")));
         }
 
+        con.close();
+
         return data;
 
     }
@@ -155,6 +159,8 @@ public class DbUtil {
                     ,"11111"
             ));
         }
+
+        con.close();
 
         return data;
     }
@@ -200,6 +206,8 @@ public class DbUtil {
             data.add(rs.getString("pid"));
         }
 
+        con.close();
+
         return data;
     }
 
@@ -219,6 +227,8 @@ public class DbUtil {
                     ,rs.getString("user_type")
                     ,"11111"));
         }
+
+        con.close();
 
         return data;
     }
