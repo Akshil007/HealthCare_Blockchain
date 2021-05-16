@@ -119,6 +119,33 @@
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
+                            <br>
+                            <h3>Available Doctors</h3>
+
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Doctor ID</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>User name</th>
+                                    <th>Email</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="row : ${availableDoctors}">
+                                    <tr>
+                                        <td th:text="${row.getUser_id()}"></td>
+                                        <td th:text="${row.getFirst_name()}"></td>
+                                        <td th:text="${row.getLast_name()}"></td>
+                                        <td th:text="${row.getUser_name()}"></td>
+                                        <td th:text="${row.getEmail_id()}"></td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+
+
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -159,4 +186,3 @@
 <script src="dist/js/demo.js"></script>
 <script src="dist/js/pages/dashboard.js"></script>
 </body>
-</html>

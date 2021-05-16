@@ -159,10 +159,10 @@ public class RestController {
 
         for (int i=0; i < records.length(); i++) {
             data.add(new Record_data(records.getJSONObject(i).getString("doctor")
-                , records.getJSONObject(i).getString("patient")
-                , records.getJSONObject(i).getString("description")
-                , records.getJSONObject(i).getString("prescription")
-                , records.getJSONObject(i).getString("RecordId"))
+                    , records.getJSONObject(i).getString("patient")
+                    , records.getJSONObject(i).getString("description")
+                    , records.getJSONObject(i).getString("prescription")
+                    , records.getJSONObject(i).getString("RecordId"))
             );
         }
 
@@ -176,7 +176,8 @@ public class RestController {
     @GetMapping("/bookDoctor")
     public String bookDoctor(HttpServletRequest req, Model theModel) throws Exception {
         MenuDetails(req, theModel);
-
+        ArrayList<User_details> availableDoctors = dbUtil.getDoctors();
+        theModel.addAttribute("availableDoctors",availableDoctors);
         return "bookDoctor";
     }
 
