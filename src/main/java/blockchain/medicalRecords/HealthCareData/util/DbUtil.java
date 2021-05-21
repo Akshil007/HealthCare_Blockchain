@@ -1,8 +1,12 @@
 package blockchain.medicalRecords.HealthCareData.util;
 
 import blockchain.medicalRecords.HealthCareData.model.Appointment;
+import blockchain.medicalRecords.HealthCareData.model.MiningWork;
 import blockchain.medicalRecords.HealthCareData.model.SQL_Details;
 import blockchain.medicalRecords.HealthCareData.model.User_details;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +16,9 @@ import java.util.ArrayList;
 
 @Service
 public class DbUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(MiningWork.class);
+
 
     @Autowired
     SQL_Details sqlDetails;
@@ -32,9 +39,11 @@ public class DbUtil {
                     "\",\"" + curr.getPassword() + "\")";
             Statement stmt = con.createStatement();
             stmt.executeUpdate(sql);
+            logger.info("Register successful");
             con.close();
         } catch (Exception e) {
             System.out.println("registerNewUser exception :: "+ e);
+            logger.error("registerNewUser exception :: "+e);
             return -1;
         }
 
@@ -59,6 +68,7 @@ public class DbUtil {
                 ,"111111"
         );
         con.close();
+        logger.info(curr.toString());
         return curr;
     }
 
@@ -71,6 +81,7 @@ public class DbUtil {
         rs.next();
         String returnIP = rs.getString("IP");
         con.close();
+        logger.info("IPs"+returnIP);
         return returnIP;
     }
 
@@ -81,6 +92,7 @@ public class DbUtil {
         Statement stmt = con.createStatement();
         stmt.executeUpdate(sql);
         con.close();
+        logger.info("Ip ia added");
     }
 
     public int bookAppoit(Appointment curr) {
@@ -96,8 +108,10 @@ public class DbUtil {
             Statement stmt = con.createStatement();
             stmt.executeUpdate(sql);
             con.close();
+            logger.info("Appointment booking successful");
         } catch (Exception e) {
             System.out.println("bookAppoit error :: " + e);
+            logger.error("exception :: "+e);
             return -1;
         }
 
@@ -138,6 +152,7 @@ public class DbUtil {
         Statement stmt = con.createStatement();
         stmt.executeUpdate(sql);
         con.close();
+        logger.info("Appointment is updated successfully");
     }
 
     public ArrayList<User_details> getDoctorPermissions(int user_id) throws Exception {
@@ -163,6 +178,7 @@ public class DbUtil {
         con.close();
 
         return data;
+
     }
 
     public void revokePermissionAction(int pid, int did) throws Exception {
@@ -183,11 +199,14 @@ public class DbUtil {
             System.out.println(sql);
             Statement stmt = con.createStatement();
             stmt.executeUpdate(sql);
+            logger.info("Permission given to doctor");
             con.close();
         } catch (Exception e) {
             System.out.println("Invalid did " + e);
+            logger.error("exception"+e);
             return -1;
         }
+
 
         return 1;
 
@@ -268,12 +287,14 @@ public class DbUtil {
                 "    FOREIGN KEY (did) REFERENCES user_details(user_id)\n" +
                 ")";
 
+
         Statement stmt = con.createStatement();
         stmt.executeUpdate(sql1);
         stmt.executeUpdate(sql2);
         stmt.executeUpdate(sql3);
         stmt.executeUpdate(sql4);
         con.close();
+        logger.info("Database is Initialized");
     }
 
 }

@@ -1,7 +1,11 @@
 package blockchain.medicalRecords.HealthCareData;
 
 import blockchain.medicalRecords.HealthCareData.model.MiningWork;
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,9 +22,13 @@ public class HealthCareDataApplication {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	private static final Logger logger = LoggerFactory.getLogger(MiningWork.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(HealthCareDataApplication.class, args);
+		logger.info("Logger started");
 	}
+
 
 	@Bean
 	public RestTemplate getRestTemplate() { return new RestTemplate(); }
@@ -31,7 +39,7 @@ public class HealthCareDataApplication {
 	}
 
 	@Bean
-	public CommandLineRunner schedulingRunner(TaskExecutor executor) {
+	public CommandLineRunner schedulingRunner(@Qualifier("taskExecutor") TaskExecutor executor) {
 		return new CommandLineRunner() {
 			public void run(String... args) throws Exception {
 				MiningWork curr = new MiningWork();

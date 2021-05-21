@@ -6,6 +6,8 @@ import blockchain.medicalRecords.HealthCareData.services.MyUserDetailsService;
 import blockchain.medicalRecords.HealthCareData.util.DbUtil;
 import blockchain.medicalRecords.HealthCareData.util.JwtUtil;
 import blockchain.medicalRecords.HealthCareData.util.MiscUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -35,6 +37,8 @@ import java.util.UUID;
 
 @Controller
 public class RestController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MiningWork.class);
 
     @Autowired
     private AuthenticationManager authManager;
@@ -109,6 +113,7 @@ public class RestController {
                 , req.getParameter("user_type")
                 , req.getParameter("password"));
 
+        logger.info("user registred:"+curr.toString());
 
         if(dbUtil.registerNewUser(curr) == 1) {
             return "login";
